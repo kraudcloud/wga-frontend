@@ -1,0 +1,52 @@
+{
+  "name": "wga-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@auth/core": "^0.30.0",
+    "@auth/sveltekit": "^1.0.1",
+    "@kubernetes/client-node": "^0.20.0",
+    "@sveltejs/adapter-node": "^5.0.1",
+    "@sveltejs/adapter-static": "^3.0.1",
+    "@sveltejs/kit": "^2.5.6",
+    "@sveltejs/vite-plugin-svelte": "^3.1.0",
+    "@types/debug": "^4.1.12",
+    "@types/eslint": "^8.56.9",
+    "@types/qrcode": "^1.5.5",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "autoprefixer": "^10.4.16",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-svelte": "^2.37.0",
+    "postcss": "^8.4.32",
+    "postcss-load-config": "^5.0.2",
+    "svelte": "^4.2.14",
+    "svelte-check": "^3.6.9",
+    "tailwind-merge": "^2.3.0",
+    "tailwind-variants": "^0.2.1",
+    "tailwindcss": "^3.3.6",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.9"
+  },
+  "type": "module",
+  "dependencies": {
+    "@noble/ed25519": "^2.1.0",
+    "bits-ui": "^0.21.6",
+    "clsx": "^2.1.1",
+    "debug": "^4.3.4",
+    "qrcode": "^1.5.3",
+    "svelte-radix": "^1.1.0",
+    "uint8-util": "^2.2.5"
+  }
+}
