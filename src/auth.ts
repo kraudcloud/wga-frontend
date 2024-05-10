@@ -8,6 +8,7 @@ const debug = Debug('auth:hook')
 
 debug('Initiating OAuth provider')
 export const { handle, signIn, signOut } = SvelteKitAuth({
+  trustHost: true,
   providers: [
     Authentik({ clientId: env.AUTHENTIK_ID, clientSecret: env.AUTHENTIK_SECRET, issuer: env.AUTHENTIK_DOMAIN + '/application/o/wga/', authorization: env.AUTHENTIK_DOMAIN + '/application/o/authorize/' })
   ],
