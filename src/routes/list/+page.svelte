@@ -9,6 +9,7 @@
   import { Input } from '$lib/components/ui/input'
   import { Label } from '$lib/components/ui/label'
   import * as Select from '$lib/components/ui/select'
+  import * as AlertDialog from '$lib/components/ui/alert-dialog'
   import * as Card from '$lib/components/ui/card'
   import { goto, invalidateAll } from '$app/navigation'
 
@@ -78,7 +79,7 @@
         <div class='font-bold'>New device</div>
         <div class='text-gray-400 text-sm'>Enter required information for the device</div>
         <Label for='name' class='pb-2 pt-5'>Device Name</Label>
-        <Input type='text' id='name' placeholder='Name' bind:value={name} />
+        <Input type='text' id='name' placeholder='Name' pattern='^[a-z0-9]([\-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([\-a-z0-9]*[a-z0-9])?)*$' bind:value={name} />
         <Label class='pb-2 pt-5'>Roles</Label>
         <Select.Root multiple bind:selected={accessRules}>
           <Select.Trigger>
@@ -115,7 +116,25 @@
           <div class='capitalize'>{item.spec.accessRules.join(', ')}</div>
         </Card.Content>
         <Card.Footer class='flex'>
-          <Button class='ml-auto' variant='destructive' on:click={() => deleteObject(item.metadata.name)}>Delete</Button>
+          <AlertDialog.Root>
+            <AlertDialog.Trigger asChild let:builder>
+              <Button builders={[builder]} class='ml-auto' variant='destructive'>Delete</Button>
+            </AlertDialog.Trigger>
+            <AlertDialog.Content>
+              <AlertDialog.Header>
+                <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+                <AlertDialog.Description>
+                  This action cannot be undone. This will permanently delete your account from our servers.
+                </AlertDialog.Description>
+              </AlertDialog.Header>
+              <AlertDialog.Footer>
+                <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+                <AlertDialog.Action asChild let:builder>
+                  <Button builders={[builder]} variant='destructive' on:click={() => deleteObject(item.metadata.name)}>Delete</Button>
+                </AlertDialog.Action>
+              </AlertDialog.Footer>
+            </AlertDialog.Content>
+          </AlertDialog.Root>
         </Card.Footer>
       </Card.Root>
     {/each}

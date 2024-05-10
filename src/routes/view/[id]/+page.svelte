@@ -11,13 +11,13 @@
   const config = `[Interface]
 PrivateKey = ${$page.url.hash.slice(1)}
 Address = ${data.status.address}
-DNS = 2606:4700:4700::1111, 2606:4700:4700::1001
+DNS = 1.1.1.1, 2606:4700:4700::1111, 2606:4700:4700::1001
 
 [Peer]
 PublicKey = ${data.status.peers[0].publicKey}
-AllowedlPs = ${data.status.peers[0].allowedIPs.join(',')}
+AllowedIPs = ${data.status.peers[0].allowedIPs.join(',')}
 Endpoint = ${data.status.peers[0].endpoint}
-`
+`.replaceAll(/\r?\n/g, '\r\n')
 
   let src = ''
 
