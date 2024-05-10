@@ -10,7 +10,7 @@ debug('Initiating OAuth provider')
 export const { handle, signIn, signOut } = SvelteKitAuth({
   trustHost: true,
   providers: [
-    Authentik({ clientId: env.AUTHENTIK_ID, clientSecret: env.AUTHENTIK_SECRET, issuer: env.AUTHENTIK_DOMAIN + '/application/o/wga-frontend/', authorization: env.AUTHENTIK_DOMAIN + '/application/o/authorize/' })
+    Authentik({ clientId: env.AUTHENTIK_ID, clientSecret: env.AUTHENTIK_SECRET, issuer: env.AUTHENTIK_ISSUER, authorization: env.AUTHENTIK_AUTHORIZATION })
   ],
   secret: env.AUTH_SECRET
 })
