@@ -1,7 +1,6 @@
 <script lang='ts'>
   import { signOut } from '@auth/sveltekit/client'
-  import { utils, getPublicKeyAsync } from '@noble/ed25519'
-  import { arr2base } from 'uint8-util'
+  import { arr2base, randomBytes } from 'uint8-util'
   import Debug from 'debug'
 
   import { Button } from '$lib/components/ui/button'
@@ -12,6 +11,7 @@
   import * as AlertDialog from '$lib/components/ui/alert-dialog'
   import * as Card from '$lib/components/ui/card'
   import { goto, invalidateAll } from '$app/navigation'
+  import generateKeyPair from '@/keys.js'
 
   const debugAuth = Debug('auth:session')
   const debugK8s = Debug('k8s:client')
@@ -44,15 +44,15 @@
   async function createObject () {
     try {
       debugK8s('Creating object %s', name)
-      const privKeyUint8 = utils.randomPrivateKey()
-      const pubKeyUint8 = await getPublicKeyAsync(privKeyUint8)
 
-      const publicKey = arr2base(pubKeyUint8)
+      const { publicKey, privateKey } = generateKeyPair()
+
+      const preSharedKey = arr2base(randomBytes(32))
 
       const res = await fetch('/api/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, accessRules: accessRules.map(({ value }) => value), publicKey })
+        body: JSON.stringify({ name, accessRules: accessRules.map(({ value }) => value), publicKey, preSharedKey })
       })
 
       if (!res.ok) throw new Error('Failed to create object.\n' + await res.text())
@@ -61,7 +61,7 @@
 
       debugK8s('Created object. Redirecting')
 
-      goto(`/view/${name}#${arr2base(privKeyUint8)}`)
+      goto(`/view/${name}#${encodeURIComponent(privateKey)}|${encodeURIComponent(preSharedKey)}`)
     } catch (err) {
       debugK8s('Failed to create object %O', err as Error)
     }
@@ -124,7 +124,7 @@
               <AlertDialog.Header>
                 <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
                 <AlertDialog.Description>
-                  This action cannot be undone. This will permanently delete your account from our servers.
+                  This action cannot be undone. This will permanently delete this profile from our servers.
                 </AlertDialog.Description>
               </AlertDialog.Header>
               <AlertDialog.Footer>

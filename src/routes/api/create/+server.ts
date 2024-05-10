@@ -1,5 +1,4 @@
 import { json } from '@sveltejs/kit'
-import { randomBytes, arr2base } from 'uint8-util'
 import Debug from 'debug'
 
 import { objectsApi } from '@/server/k8s'
@@ -10,7 +9,7 @@ const debug = Debug('k8s:api')
 
 export async function POST ({ request }) {
   try {
-    const { name, accessRules, publicKey }: { name: string, accessRules: string[], publicKey: string } = await request.json()
+    const { name, accessRules, publicKey, preSharedKey }: { name: string, accessRules: string[], publicKey: string, preSharedKey: string } = await request.json()
 
     const object: WGAPMinimal = {
       apiVersion: 'wga.kraudcloud.com/v1beta',
@@ -18,7 +17,7 @@ export async function POST ({ request }) {
       metadata: { name },
       spec: {
         accessRules,
-        preSharedKey: arr2base(randomBytes(32)),
+        preSharedKey,
         publicKey
       }
     }

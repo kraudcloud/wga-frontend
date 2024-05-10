@@ -8,12 +8,15 @@
 
   export let data
 
+  const [priv, pre] = $page.url.hash.slice(1).split('|')
+
   const config = `[Interface]
-PrivateKey = ${$page.url.hash.slice(1)}
+PrivateKey = ${decodeURIComponent(priv)}
 Address = ${data.status.address}
 DNS = 1.1.1.1, 2606:4700:4700::1111, 2606:4700:4700::1001
 
 [Peer]
+PresharedKey = ${decodeURIComponent(pre)}
 PublicKey = ${data.status.peers[0].publicKey}
 AllowedIPs = ${data.status.peers[0].allowedIPs.join(',')}
 Endpoint = ${data.status.peers[0].endpoint}

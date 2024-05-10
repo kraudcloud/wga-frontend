@@ -41,7 +41,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@noble/ed25519": "^2.1.0",
     "bits-ui": "^0.21.6",
     "clsx": "^2.1.1",
     "debug": "^4.3.4",
