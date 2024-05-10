@@ -15,7 +15,6 @@ const protectedRoutes: Handle = async ({ event, resolve }) => {
     debug('Entering protected route')
     const session = await event.locals.auth()
 
-    // @ts-expect-error - Add groups to session
     if (!session?.user) {
       debug('Not authorized')
       throw error(401, 'Unauthorized')
