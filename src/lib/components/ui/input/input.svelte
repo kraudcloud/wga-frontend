@@ -3,7 +3,7 @@
 	import type { InputEvents } from "./index.js";
 	import { cn } from "$lib/utils.js";
 
-	type $$Props = HTMLInputAttributes;
+	type $$Props = HTMLInputAttributes & {input: HTMLInputElement};
 	type $$Events = InputEvents;
 
 	let className: $$Props["class"] = undefined;
@@ -13,6 +13,8 @@
 	// Workaround for https://github.com/sveltejs/svelte/issues/9305
 	// Fixed in Svelte 5, but not backported to 4.x.
 	export let readonly: $$Props["readonly"] = undefined;
+
+	export let input: HTMLInputElement
 </script>
 
 <input
@@ -37,5 +39,6 @@
 	on:paste
 	on:input
 	on:wheel
+	bind:this={input}
 	{...$$restProps}
 />

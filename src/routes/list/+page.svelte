@@ -10,7 +10,7 @@
   import * as Select from '$lib/components/ui/select'
   import * as AlertDialog from '$lib/components/ui/alert-dialog'
   import * as Card from '$lib/components/ui/card'
-  import { goto, invalidateAll } from '$app/navigation'
+  import { invalidateAll } from '$app/navigation'
   import generateKeyPair from '@/keys.js'
 
   const debugAuth = Debug('auth:session')
@@ -18,7 +18,7 @@
 
   function signout () {
     debugAuth('Requesting sign-out')
-    signOut()
+    signOut({ callbackUrl: '/' })
   }
 
   export let data
@@ -44,6 +44,11 @@
   async function createObject () {
     try {
       debugK8s('Creating object %s', name)
+      if (!/^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$/.test(name)) {
+        input.setCustomValidity('Must consist of lower case alphanumeric characters, "-" or ".", and must start and end with an alphanumeric character')
+        input.reportValidity()
+        return
+      }
 
       const { publicKey, privateKey } = generateKeyPair()
 
@@ -61,11 +66,12 @@
 
       debugK8s('Created object. Redirecting')
 
-      goto(`/view/${name}#${encodeURIComponent(privateKey)}|${encodeURIComponent(preSharedKey)}`)
+      open(`/view/${name}#${encodeURIComponent(privateKey)}|${encodeURIComponent(preSharedKey)}`, '_blank')
     } catch (err) {
       debugK8s('Failed to create object %O', err as Error)
     }
   }
+  let input: HTMLInputElement
 </script>
 
 <header class='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
@@ -79,7 +85,7 @@
         <div class='font-bold'>New device</div>
         <div class='text-gray-400 text-sm'>Enter required information for the device</div>
         <Label for='name' class='pb-2 pt-5'>Device Name</Label>
-        <Input type='text' id='name' placeholder='Name' pattern='^[a-z0-9]([\-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([\-a-z0-9]*[a-z0-9])?)*$' bind:value={name} />
+        <Input type='text' id='name' placeholder='Name' bind:input bind:value={name} />
         <Label class='pb-2 pt-5'>Roles</Label>
         <Select.Root multiple bind:selected={accessRules}>
           <Select.Trigger>
