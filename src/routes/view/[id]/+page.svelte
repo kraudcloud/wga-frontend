@@ -13,7 +13,6 @@
   const config = `[Interface]
 PrivateKey = ${decodeURIComponent(priv)}
 Address = ${data.status.address}
-DNS = 1.1.1.1, 2606:4700:4700::1111, 2606:4700:4700::1001
 
 [Peer]
 PresharedKey = ${decodeURIComponent(pre)}
