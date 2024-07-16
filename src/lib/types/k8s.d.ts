@@ -17,6 +17,7 @@ export type WGAP = {
   }
   status: {
     address: string
+    dns: string[]
     peers: {
       allowedIPs: string[]
       endpoint: string
