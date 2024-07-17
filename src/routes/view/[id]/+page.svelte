@@ -13,6 +13,7 @@
   const config = `[Interface]
 PrivateKey = ${decodeURIComponent(priv)}
 Address = ${data.status.address}
+DNS = ${data.status.dns.join(', ')}
 
 [Peer]
 PresharedKey = ${decodeURIComponent(pre)}
